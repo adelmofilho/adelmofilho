@@ -1,4 +1,14 @@
-### Hi there 👋
+###  $ whoami
+
+> I am the bone of my code <br /> 
+POG is my body, coffee is my blood <br /> 
+I have created over a thounsand code lines <br /> 
+Unkown to git, nor known to PEP <br /> 
+Have withstood bugs to create many defs <br /> 
+Yet those Hands will never deploy Anything. <br /> 
+So, as I Pray... <br /> 
+Unlimited Code Works
+
 
 <!--
 **adelmofilho/adelmofilho** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.

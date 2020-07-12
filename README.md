@@ -9,9 +9,6 @@ Yet those hands will never deploy anything. <br />
 So, as I Pray... <br /> <br /> 
 Unlimited Code Works
 
-:briefcase: Data Scientist in Brazil  
-:computer: I’m currently learning Docker :whale:, Ansible :robot: and Cloud Computing :cloud: for Machine Learning
-
 <!--
 **adelmofilho/adelmofilho** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 

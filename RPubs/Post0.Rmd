@@ -1,0 +1,69 @@
+---
+title: ''
+author: "Adelmo Filho ( <aguiar.soul@gmail.com> )"
+date: "29 Mai 2016"
+output:
+  html_document:
+    fig_width: 7
+    fig_height: 6
+    fig_align: "center"
+    keep_md: true
+    mathjax: default
+    code_folding: show
+    theme: default
+    highlight: haddock
+    toc: true
+    number_sections: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# File > New Project
+<br>
+
+> "O começar é o momento mais delicado na correção do equilibrio" (Duna, 1965)
+
+<p style="text-align: justify;">  Bem-vindos! Este é inicio do projeto ["Statistics Rides Alone"](https://www.youtube.com/watch?v=TZsUAqaOiHU), voltado para o aprendizado de estatística junto com a [linguagem de programação R](https://www.r-project.org/). Inicialmente, todo o material será publicado na minha página pessoal no [RPubs](http://rpubs.com/adelmofilho) até que possa migrar para um site que suporte [RMarkdown](http://rmarkdown.rstudio.com/), mas, como já disse meu irmão:</p>
+
+<br>
+
+<div style="text-align:center">
+  ![](./Pictures/xande1.jpg)
+</div>
+
+<br>
+
+<p style="text-align: justify;"> Com exceção do título deste post e do nome do projeto, todo o conteúdo será publicado em português, fortalecendo e facilitando a programação em [R](https://www.r-project.org/) no Brasil. O inglês é a língua falada nos fóruns de discussão e grupos de programação pelo mundo, mas não pode ser encarada como um obstáculo para se aprender a programar. Iniciativas nacionais devem ser criadas para estimular o interesse e a paixão.</p>
+
+<p style="text-align: justify;">Deixo claro: Este não é um material de tradução de sites ou blogs com esta temática! As referências serão respeitadas, mas tenho como objetivo criar algo inédito para mim e a vocês leitores e contribuidores.</p>
+
+# Próximas publicações
+<br>
+<p style="text-align: justify;">As publicações estatísticas serão divididas em diferentes partes procurando englobar três principais pontos:</p>
+
+- Fundamentação teórica
+- Abordagem histórica
+- Aplicações e estudos de caso no [R](https://www.r-project.org/)
+
+<br>
+<p style="text-align: justify;">A frequência de publicações, contudo, seguirá a ordem inversa à apresentada acima em razão do tempo necessário para pesquisa e escrita. Você poderá acompanhar o lançamento das novas publicações por meio da página de facebook do projeto "Statistics Rides Alone".</p>
+
+<p style="text-align: justify;">Esporadicamente, também haverão publicações sobre a linguagem R em si e o RStudio, GUI utilizada nesse projeto, com foco no usuário avançado.</p>
+
+<p style="text-align: justify;">Ao fim de todos as publicações também disponibilizarei as informações da minha sessão no R (versão do R, pacotes atrelados, sistema operacional) como base de comparação. Recomendo atualizar o R para a versão apresentada e instalar os pacotes descritos, evitando qualquer incompatibilidade.</p>
+
+```{r}
+sessionInfo()
+```
+<br>
+
+# [Quem eu sou?](https://www.youtube.com/watch?v=PdLIerfXuZ4)
+<br>
+<p style="text-align: justify;"> Meu nome é [Adelmo Filho](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=S1325235) ( <aguiar.soul@gmail.com> ) sou aluno de Engenharia Química da Federal da Bahia. O que faz um aluno de engenharia entrar nas áreas de estatística e programação? [Não sei!](./Pictures/chico.jpg) Desde o primeiro semestre trabalho junto ao Grupo de Pesquisas em Análise Multivariada Aplicada de minha faculdade, onde venho desenvolvendo projetos nas áreas de análise multivariada, modelos de sobrevivência, machine learning, reconhecimento de padrões e otimização.</p>
+
+<p style="text-align: justify;">Esteja a vontade para enviar dúvidas e sugestões para o e-mail acima, tentarei responder assim que possível e caso autorize posso respondê-las como um post aberto aos demais leitores.</p>

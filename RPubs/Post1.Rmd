@@ -1,0 +1,210 @@
+---
+title: "Regressão linear simples em R"
+author: "Adelmo Filho ( <aguiar.soul@gmail.com> )"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    fig_width: 7
+    fig_height: 6
+    fig_align: "center"
+    keep_md: true
+    mathjax: default
+    code_folding: show
+    theme: default
+    highlight: haddock
+    toc: true
+    number_sections: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<br>
+
+# Conjunto de dados ["cars"](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/cars.html)
+
+<p style="text-align: justify;"> O [R](https://www.r-project.org/) possui pré-instalado diversos conjuntos de dados (datasets) para utilização direta pelo usuário (sem necessidade de importação). Entre com o seguinte comando para visualizar as opções disponíveis: </p>
+
+```{r,  eval = FALSE}
+utils::data()
+```
+
+<p style="text-align: justify;">  Para o nosso exemplo de regressão linear simples em [R](https://www.r-project.org/) usaremos o conjunto de dados ["cars"](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/cars.html). Ele é composto por 50 observações da velocidade de diferentes carros da década de 20 e da respectiva distância alcançada pelo carros durante o experimento.</p>
+
+```{r}
+str(cars)  # Retorna a estrutura do conjunto de dados.
+```
+
+<p style="text-align: justify;">Antes de ajustar qualquer modelo, vamos observar o comportamento dos dados com base em algumas [técnicas exploratórias gráficas](http://www.itl.nist.gov/div898/handbook/eda/eda.htm) e parâmetros estatísticos. Com a função [**stat.desc**](https://cran.r-project.org/web/packages/pastecs/pastecs.pdf) do pacote *pastecs*  podemos verificar estimativas para a média, mediana, range, variância, dentre outros. </p>
+
+```{r, warning = FALSE, message=FALSE}
+library(pastecs)
+stat.desc(cars)
+```
+
+<p style="text-align: justify;">Neste momento, os valores tabelados acima não nos agregaram mais informações do que visualizando, propriamente dito, os dados. Se queremos um modelo, é esperado que a variável resposta e as preditores possuam uma boa correlação entre si. Para isso, plotemos os valores de velocidade contra as distâncias:</p>
+
+```{r, fig.width = 8, fig.height = 4, fig.align = 'center'}
+par(mar = c(5,4,2,2))
+
+plot(x = cars$speed, 
+     y = cars$dist,
+     xlab = "Velocidade (mph)", 
+     ylab = "distância (ft)",
+     pch = 16)
+```
+
+<p style="text-align: justify;">O gráfico acima apresenta uma boa relação entre a velocidade do carro e a distância percorrida por eles no experimento. O coeficiente de correlação de pearson concorda com o gráfico, obtendo um valor igual a `r cor(cars)[1,2] `.</p>
+
+<p style="text-align: justify;">No código acima usamos o argumento *pch* para a plotagem dos dados. Este argumento seleciona o formato do simbolo plotado. No gráfico abaixo, tem-se o simbolo associado a cada valor de *pch*:</p>
+
+```{r, fig.height = 2.5, fig.align = 'center', echo = FALSE}
+par(mar = c(5,4,2,2))
+
+plot(x = 1:25,
+     y = rep(x = 0, times = 25),
+     pch = 1:25,
+     ylab = "",
+     xlab = "pch",
+     yaxt="n",
+     xaxp= c(1, 25, 24))
+```
+
+<p style="text-align: justify;">Para a construção dos histogramas abaixo usamos o argumento *mfrow* dentro da função **par**. Esta última controla todos os argumentos gráficos, enquanto *mfrow* define a organização de múltiplos gráficos num mesmo painel semelhante a uma matriz. Neste caso nosso painel tem uma linha e duas colunas.</p>
+
+```{r, fig.height = 3, fig.align = 'center'}
+
+par(mfrow = c(1, 2)) 
+
+# histograma das velocidades
+hist(x = cars$speed,
+     col = "gray",
+     xlab = "Velocidade (mph)",
+     ylab = "Frequência",
+     main = "")
+
+# histograma das distâncias
+hist(x = cars$dist,
+     col = "lightblue",
+     xlab = "Distância (ft)",
+     ylab = "Frequência",
+     main = "")
+```
+
+<p style="text-align: justify;">Com os boxplots abaixo, observamos um possível ponto aberrante (outlier) em nossos dados. Em geral, estamos acostumados com a ideia de um outlier em modelo, ou seja, alguma observação (dados) que o nosso modelo não tem boa aderência e por isso produz um alto resíduo. Não é este o caso.</p>
+
+```{r, fig.height = 4, fig.align = 'center'}
+par(mar = c(4,4,2,2))
+
+# boxplot dos dados de velocidade e distância
+boxplot(cars$speed, cars$dist,
+        names = c("Velocidade", "Distância"),
+        col = c("lightgray", "lightblue"))
+```
+
+<p style="text-align: justify;">Este possível outlier corresponde à observação 49 no conjunto de dados, na qual um carro com velocidade igual a 24 mph alcança 120 ft. Devemos remover este ponto de nossos dados? Para isso devemos perguntar: Esta observação representa nosso conjunto de dados? Estamos tratando de um mesmo tipo de carro? Ou será que ele alcança uma distância menor porque é na realidade um carro de corrida e não um carro urbano? Infelizmente, não temos essa informação. Então, de forma conservadora, vamos manter essa observação em nosso conjunto de dados.</p>
+<br>
+
+# Construção do modelo linear
+
+<p style="text-align: justify;">Para construção de nosso modelo  $distancia = \alpha.velocidade + \beta$  vamos utilizar a função nativa do [R](https://www.r-project.org/) **lm** (do inglês, linear model). Nela escrevemos a equação anterior com a seguinte sintaxe: Y ~ X. Ou seja, Y é nossa variável resposta (distância) e X nossa preditora (velocidade). o simbolo "~" equivale a dizer "é função de". A função **lm**, então estima o coeficiente da variável preditora e a constante da função por padrão.</p>
+
+````{r}
+modelo.simples = lm(cars$dist ~ cars$speed)
+summary(modelo.simples)
+```
+
+<p style="text-align: justify;">A função retorna no console (acima) diversas informações sobre o modelo e sua adequação.</p>
+
+<p style="text-align: justify;">Na linha **Call** temos a função ajustada pela função **lm**. Na linha **Residual** são apresentadas algumas informações sobre os resíduos do modelo (valor mínimo, máximo, mediana, 1° e 3° Quartis).</p>
+
+<p style="text-align: justify;">Na linha **Coeficients** é apresentada uma tabela contendo o valor dos coeficientes (Estimate), o erro padrão do coeficiente (Std. Error), o valor da estatística t (t value) e finalmente o p-valor do teste t para significância do coeficiente (*Pr(>|t|)*).</p>
+
+<p style="text-align: justify;">Ao lado direito do p-valor do teste dos coeficientes, ainda é apresentado por meio de símbolos (explicados na linha abaixo), para qual nível de significância os coeficientes são significativos.</p>
+
+<p style="text-align: justify;">Por fim, é realizado um teste F para adequação do modelo, apresentado para isso o número de graus de liberdade envolvidos, o erro padrão residual, os valores para o R^2^ e o R^2^ ajustado, o consequente valor da estatística F e seu respectivo p-valor. Caso deseje-se obter a tabela de ANOVA separadamente, basta entrar com a função:</p>
+
+```{r}
+anova(modelo.simples)
+```
+
+<p style="text-align: justify;">Com base nas informações acima, podemos afirmar que o modelo é estatisticamente significante (p-valor do teste F aproximadamente nulo), da mesma forma que com os coeficientes de regressão (p-valor do teste T). O valor do R^2^ indica um aderência moderada aos dados (~ 0.6).</p>
+
+<p style="text-align: justify;">**Contudo, o que garante que as conclusões anteriores sejam verdadeiras?** A estimativa dos p-valores, do R^2^ e dos coeficientes é em sua essência uma função matemática, independente dos valores utilizados, um resultado será obtido. Então, o que garante os resultados tenham valor estatístico? </p>
+
+<p style="text-align: justify;">**Resposta:** O cumprimento das considerações do modelo de mínimos quadrados:</p>
+
+- Resíduos com distribuição normal
+- Homoscedasticidade dos resíduos (variância constante)
+- Aleatoriedade dos resíduos frente ao valor predito e às variáveis preditoras
+
+<p style="text-align: justify;">Estas condições vem do desenvolvimento do métodos dos mínimos quadrados a partir do método da máxima verossimilhança e devem ser avaliados a posteriori da construção do modelo.</p>
+
+# Validação do modelo linear
+
+<p style="text-align: justify;">Inicialmente, avaliemos a hipótese de homoscedasticidade dos resíduos de forma gráfica, plotando os valores preditos pelo modelo por aqueles observados (distância).</p>
+
+```{r, fig.width = 8, fig.height = 4, fig.align = 'center'}
+par(mar = c(5,4,2,2))
+
+plot(x = cars$dist, 
+     y = modelo.simples$fitted.values,
+     xlim = c(0, 120), 
+     ylim = c(0, 120),
+     pch = 16,
+     xlab = "Valores observados",
+     ylab = "Valores preditos")
+
+abline(a = 0, b = 1, lty = 2, col = "red")
+```
+
+<p style="text-align: justify;">Com base no gráfico anterior, verifica-se que para valores acima de 80 para a distância, a predição do modelo começa a ser prejudicada, estimando valores menores do que o observado. Observe também que o modelo pode estimar valores negativos para a distância quando valores baixos de velocidade são utilizados, o que compromete o domínio de aplicação do modelo.</p>
+
+<p style="text-align: justify;">A mesma conclusão pode ser obtida avaliando o gráfico a direta no painel a seguir. À esquerda, no gráfico de resíduos versus a variável preditora, por outro lado, não se encontra indícios visuais da não-aleatoriedade dos resíduos.</p>
+
+```{r, fig.width = 8, fig.height = 3, fig.align = 'center'}
+par(mfrow = c(1, 2), mar = c(5,4,2,2))
+
+plot(x = cars$speed, 
+     y = modelo.simples$residuals,
+     pch = 16,
+     col = "red",
+     xlab = "Velocidade (mph)", ylab = "Resíduos")
+
+plot(x = cars$dist, 
+     y = modelo.simples$residuals,
+     pch = 16,
+     col = "lightblue",
+     xlab = "Distância (ft)", ylab = "Resíduos")
+```
+
+<p style="text-align: justify;">A distribuição de probabilidade dos resíduos pode ser verificada visualmente a partir de um histograma dos resíduos. Que conforme a figura abaixo indica uma cauda não simétrica a direita da distribuição, o que sugere a não normalidade dos resíduos.</p>
+
+```{r, fig.width = 8, fig.height = 4, fig.align = 'center'}
+par(mar = c(5,4,2,2))
+hist(x = modelo.simples$residuals,
+     xlab = "Resíduos",
+     ylab = "Densidade de Probabilidade",
+     main = "",
+     col = "lightgreen",
+     probability = TRUE)
+
+lines(density(modelo.simples$residuals))
+```
+
+<p style="text-align: justify;">Aplicando o teste de Shapiro-Wilk para os resíduos (**shapiro.test**), concluímos que para um nível de significância de 5%, nossos dados não vêm de uma distribuição normal.</p>
+
+```{r} 
+shapiro.test(modelo.simples$residuals)
+```
+
+# Conclusões
+
+<p style="text-align: justify;">A validação do modelo demonstrou até certo ponto que as considerações necessárias para o método dos mínimos quadrados não foram atendidos. Aplicabilidade e significância estatística, são, contudo, aspectos diferentes.</p>
+
+<p style="text-align: justify;">A validação não é finalizada apenas com estas análises, técnicas como a chamada "crossvalidation" ainda podem ser aplicadas.</p>
+
+<p style="text-align: justify;">Outra questão interessante a ser discutida é a robustez dos teste estatísticos (F e t) contra a fuga da normalidade ou aleatoriedade dos resíduos.</p>

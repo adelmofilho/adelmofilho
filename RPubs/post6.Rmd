@@ -1,0 +1,157 @@
+---
+title: "Feedback do curso de RMarkdown"
+author: "Adelmo Filho"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    fig_width: 7
+    fig_height: 6
+    fig_align: "center"
+    keep_md: true
+    mathjax: default
+    code_folding: show
+    theme: default
+    highlight: haddock
+    toc: true
+    number_sections: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Importação de dados
+
+path.curso    = "C:/Users/Adelmo/OneDrive/Documentos/curso.txt"
+path.feedback = "C:/Users/Adelmo/OneDrive/Documentos/feedback.txt"
+
+curso = read.delim(file = path.curso, 
+                   header = TRUE)
+
+feedback = read.delim(file = path.feedback, 
+                      comment.char="#", 
+                      header = TRUE)
+```
+
+# 
+
+```{r}
+library(ggplot2)
+library(ggthemes)
+
+ggplot(data = curso, aes(Faculdade)) +
+    geom_bar(mapping = aes(Faculdade), color = "black", fill = "lightblue",
+             width = 0.75) +
+    theme_bw() +
+    labs(title = "", x = "Faculdades", y = "Número de inscritos")
+```
+
+
+
+```{r}
+tipos = levels(curso$Curso)
+quantidade = rep(x = 0, times = length(tipos))
+
+quantidade[1] = sum(curso$Curso == "Doutorado")
+quantidade[2] = sum(curso$Curso == "Mestrado")
+quantidade[3] = sum(curso$Curso == "Graduação")  
+
+tabela = data.frame(quantidade, levels(curso$Curso))
+colnames(tabela) = c("quantidade", "levels")
+
+blank_theme <- theme_minimal()+
+  theme(
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  panel.border = element_blank(),
+  panel.grid=element_blank(),
+  axis.ticks = element_blank(),
+  plot.title=element_text(size=14, face="bold"),
+  legend.position = "bottom"
+  )
+y.brakes = cumsum(tabela$quantidade) - tabela$quantidade/2
+library(scales)
+bp <- ggplot(tabela, aes(x="", y=quantidade, fill=levels(tabela$levels)))+
+geom_bar(width = 1, stat = "identity", color = "black")
+bp + coord_polar("y")  +
+    scale_fill_discrete(guide = guide_legend(title = "")) +
+    labs(title = "", x = "", y = "") + blank_theme + 
+    geom_text(aes(y = quantidade/2 + c(0, cumsum(quantidade)[-length(quantidade)]), 
+            label = percent(quantidade/sum(quantidade))), size=4.5) + 
+     scale_y_continuous(
+        breaks = y.brakes,
+        labels=as.character(tabela$levels) # the labels
+    )
+    
+
+```
+
+```{r}
+library(reshape2)
+raw = curso[, 5:9]
+freq=table(col(raw), as.matrix(raw))
+Names=c("R","LaTex","HTML", "CSS", "RMarkdown")     # create list of names
+data=data.frame(cbind(freq),Names)
+data.m <- melt(data, id.vars='Names')
+
+ggplot(data.m, aes(Names, value)) +   
+  geom_bar(aes(fill = variable), position = "dodge", stat="identity") +
+     theme_bw() +
+    labs(title = "", x = "Linguagens de programação ou marcação", y = "") +
+    theme(legend.position = "bottom", legend.title = element_blank()) +
+        scale_fill_brewer(
+palette = "Dark2")
+```
+
+```{r}
+raw = feedback[, 3:6]
+freq=table(col(raw), as.matrix(raw))
+Names=c("Expectativa", "Prática", "Pesquisa Reproduzível.", "R")    # create list of names
+data=data.frame(cbind(freq),Names)
+colnames(data) = c("Muito pouco", "Pouco", "Talvez", "Provável", "Muito provável", "Names")
+data.m <- melt(data, id.vars='Names')
+
+ggplot(data.m, aes(Names, value)) +   
+  geom_bar(aes(fill = variable), position = "dodge", stat="identity") +
+     theme_bw() +
+    labs(title = "", x = "", y = "") +
+    theme(legend.position = "bottom", legend.title = element_blank()) +
+        scale_fill_brewer(
+palette = "Greens")
+```
+
+```{r}
+raw = feedback[, 7:12]
+freq=table(col(raw), as.matrix(raw))
+Names=c("Horário", "Carga horária", "Espaço físico", "Inscrição",
+        "Conteúdo", "Didática")    # create list of names
+data=data.frame(cbind(freq),Names)
+data=data[,c(4,5,2,1,3,6)] 
+colnames(data) = c("Muito ruim", "Ruim", "Indiferente", "Bom", "Muito bom", "Names")
+data.m <- melt(data, id.vars='Names')
+
+ggplot(data.m, aes(Names, value)) +   
+  geom_bar(aes(fill = variable), position = "dodge", stat="identity") +
+     theme_bw() +
+    labs(title = "", x = "", y = "Número de votos") +
+    theme(legend.position = "bottom", legend.title = element_blank()) +
+    scale_fill_brewer(
+palette = "Greys")
+```
+
+```{r}
+j = 1
+coment = character(length = 1L)
+for (i in 1:length(feedback$comentarios)){
+   if(is.na(feedback$comentarios[i])){
+       
+   } else{
+        coment[j] <- as.character(feedback$comentarios[i])
+       j = j + 1}
+    }
+```
+

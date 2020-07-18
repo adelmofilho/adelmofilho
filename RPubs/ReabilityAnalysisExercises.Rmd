@@ -1,0 +1,117 @@
+---
+title: "Atividade de confiabilidade em R"
+author: "Adelmo Filho ( <aguiar.soul@gmail.com> )"
+date: "05 de Agosto de 2016"
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+  html_document:
+    code_folding: show
+    fig_align: center
+    fig_height: 6
+    fig_width: 7
+    highlight: haddock
+    mathjax: default
+    number_sections: no
+    theme: default
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<br>
+
+Para fins de avaliação e apreensão do conteúdo é obrigatório o envio da seguinte atividade.
+
+### Banco de dados da atividade
+
+Em todas as etapas da atividade utilizaremos o banco de dados de falhas de transformadores elétricos provenientes da Companhia de Eletricidade do Estado da Bahia (COELBA). Para fazer o download dos dados, acesse [ESTE LINK](https://www.dropbox.com/s/adrj8zrizs0dt77/opsdata.txt?dl=0).
+
+O banco de dados está em formato bloco de notas (.txt) para facilitar sua importação ao RStudio. Ele contém 1698 observações de tempo de falha e cinco colunas:
+
+- **idade**: Corresponde ao intervalo de tempo (em anos) de operação do transformador elétrico  até sua falha.
+
+- **censura1**: Corresponde à variável indicadora de censura para cada observação que será utilizada na primeira parte da atividade.
+
+- **censura2**: Corresponde à variável indicadora de censura para cada observação que será utilizada na segunda parte da atividade.
+
+- **KVA**: Corresponde à potencial nominal do transformador (característica construtiva).
+
+- **Fases**: Corresponde ao número de fases do transformador (característica construtiva).
+
+Para realizar a importação do conjunto de dados no RStudio entre com a seguinte função:
+
+```{r}
+opsdata <- read.delim2(file.choose(), header = TRUE)
+```
+
+<br>
+
+Uma janela se abrirá para que possa selecionar o arquivo contendo o banco de dados, e o mesmo será salvo no RStudio no objeto denominado **opsdata**. Para conferir se a importação foi realizada com sucesso, você pode entrar com as seguintes funções:
+
+```{r}
+View(opsdata) ## Uma aba se abrirá no RStudio para visualização dos dados
+
+dim(opsdata)  ## Retorna um vetor contendo o número de linhas e colunas do conjunto de dados
+```
+
+```{r}
+head(opsdata) ## Retorna as primeiras linhas do conjunto de dados
+```
+
+<br>
+
+### Etapas da atividade
+
+<br>
+
+**PRIMEIRA PARTE**
+
+Utilizar nesta parte a variável indicadora de censura da coluna **censura1**
+
+<br>
+
+**1.** Construir e avaliar criticamente diferentes modelos paramétricos de curvas de confiabilidade (exponencial, weibull, lognormal etc.).
+
+**2.** Interpretar o valor dos coeficientes dos modelos.
+
+**3.** Construir a curva de sobrevivência não-paramétrica através do estimador Kaplan-Meier.
+
+**4.** Avaliar a qualidade do ajuste realizado por cada um dos modelos paramétricos, frente ao modelo não-paramétrico.
+
+**5.** Construa um modelo de tempo de falha acelerado para a distribuição com melhor ajuste (etapa 4) considerando o número de fases e tensão nominal dos transformadores como covariáveis.
+
+<br>
+
+**SEGUNDA PARTE**
+
+Utilizar nesta parte a variável indicadora de censura da coluna **censura2**
+
+<br>
+
+**1.** Construir e avaliar criticamente diferentes modelos paramétricos de curvas de confiabilidade (exponencial, weibull, lognormal etc.).
+
+**2.** Comparar criticamente o valor dos coeficientes dos modelos da primeira parte da atividade (**censura1**) com a da segunda parte (**censura2**). Como a presença da censura à direita impacta na estimativa dos parâmetros?
+
+<br>
+
+### Pacote de funções
+
+É recomendado para realização desta atividade o uso dos pacotes de funções **survival** e **flexsurv**. Para instalar e carregar ambos entre com as funções:
+
+```{r, message=FALSE, warning=FALSE, results='hide', eval=FALSE}
+install.packages("survival", repos = "http://cran.rstudio.com/") # Instala o pacote "survival"
+install.packages("flexsurv", repos = "http://cran.rstudio.com/") # Instala o pacote "flexsurv"
+
+library(survival) # Carrega o pacote de funções "survival"
+library(flexsurv) # Carrega o pacote de funções "flexsurv"
+```
+
+Recomenda-se a leitura do  [manual do pacote flexsurv](https://cran.r-project.org/web/packages/flexsurv/vignettes/flexsurv.pdf) e o uso do seu script salvo da aula prática em R.

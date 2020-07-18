@@ -1,0 +1,141 @@
+---
+title: "Reunião GAMA"
+subtitle: "Disciplinas ENGD02 e ENGD83"
+author: "Sala do GAMA | 08:30 - 12:00"
+date: "7 Julho de 2016"
+output:
+  html_document:
+    fig_width: 7
+    fig_height: 6
+    fig_align: "center"
+    keep_md: true
+    mathjax: default
+    code_folding: show
+    theme: default
+    highlight: haddock
+    toc: true
+    number_sections: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Participantes
+
+<br>
+
+- Profa. Karla Esquerre
+- Suzzane Mercandelli
+- Tales Vasconcelos
+- Pedro Barbosa de Oliveira Filho
+- Pedro Neri
+- Adelmo Aguiar Filho
+- Felipe Ergueta
+- Sillas
+
+------
+
+### O que foi apresentado?
+
+<br>
+
+- Slides em RMarkdown para a disciplina ENGD02
+- Lista de exercícios para a disciplina ENGD83
+
+------
+
+### Discussões, ideias e sugestões
+
+<br>
+
+**1. Verificar a possibilidade de criar um curso no COUSERA ao invés de desenvolver a arquitetura de um sistema EAD para os cursos de estatística em Shiny.**
+
+<br>
+  
+  * O formulário para requisitar a abertura de um curso pelo COUSERA é dados por [este LINK](https://docs.google.com/forms/d/1dAHVElrpDYaxSnUpX4JRdNaomqIR8DMxHcoIZop59b8/viewform)
+  
+  * No material institucional do COUSERA é possível obter mais informações. Acesse-o por este [LINK](http://academicinnovation.wvu.edu/MOOC/PDF/Coursera.pdf)
+  
+  * Caso não seja possível criar um curso no COUSERA, Tales sugeriu utilizar o GitHub como forma de armazenar o progresso dos alunos, facilitando a implementação do Shiny.
+  
+<br>
+  
+**2. Utilizar o simbólico em R**
+  
+  * Neste [LINK](http://www.r-bloggers.com/using-r-as-a-computer-algebra-system-with-ryacas/) é apresentado o pacote de funções e sua utilização para cálculos simbólicos no R.
+  
+<br>
+  
+**3. Slides de ENGD02**
+
+<br>
+
+  * Foi sugerido apresentar os códigos com funções nativas do R junto com o modelo que foi apresentado.
+  
+  * A plotagem de histograma junto com a curva de densidade pode ser feita com o seguinte código.
+
+```{r, echo = TRUE, fig.align='center', fig.height=4, dpi=1000}
+x <- seq(-5,5,0.001)
+y <- dnorm(x)
+
+hist(h <- rnorm(10000), probability = TRUE, 
+     col = "lightgreen", ylim = c(0,0.42), main = "", 
+     xlab = "x", ylab = "Densidade de probabilidade")
+
+lines(x, y, type = "l", col = "red")
+```
+
+  * Foi sugerido a tradução de todos os termos nas figuras para português.
+  
+  * Foi sugerido apresentar a resposta dos exercícios junto com o gráfico correspondente da distribuição e plotando a resposta no gráfico.
+  
+  * Foi sugerido apresentar as funções nativas do R para as distribuições citadas na forma de tabela.
+
+<br>
+
+**4. Lista unificada de ENGD83**
+
+<br>
+
+  * Foi sugerido reportar os resultados das questões de inferência em maior consonância com o artigo ["The ASA's Statement on p-Values: Context, Process, and Purpose"](http://amstat.tandfonline.com/doi/abs/10.1080/00031305.2016.1154108)
+  
+  * Foi sugerido aumentar o número de gráficos descritivos nas questões de descritiva e contextualizar mais as respostas com os dados e o contexto das questões.
+
+<br>
+
+**5. Organização do produto final da equipe**
+  
+  - Foi discutido como ordem de construção e foco das atividades até o fechamento do produto final (livro).
+  
+    + Elaboração dos slides contendo códigos em R para elaboração das análises estatísticas.
+    
+    + Inserção de aplicativos Shiny nos slides para apresentação de exercícios ou exemplos.
+    
+    + Upload dos slides para o RPubs
+    
+    + Conversão do material em slide para uma documentação como apostilas e upload para o RPubs
+    
+    + Elaboração do livro da disciplina
+    
+<br>
+
+**6. Organização de um curso sobre Shiny para capacitação dos membros**
+
+------
+
+Apenas um teste para verificar se podemos inserir videos de forma fácil em nossos documentos.
+
+Video-aulas??
+
+Me avisem de algum bug por favor.
+
+<br>
+
+<iframe width="900" height="500" align="middle"
+src="http://www.youtube.com/embed/LpIbgBChVgY?autoplay=0">
+</iframe>

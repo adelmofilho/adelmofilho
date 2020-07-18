@@ -1,0 +1,151 @@
+---
+title: "Análise geográfica das músicas"
+output: html_notebook
+---
+
+## Carregamento de bibliotecas R
+
+```{r}
+
+library(reticulate)
+library(data.table)
+library(tidyverse)
+```
+
+## Configuração da env python
+
+```{r}
+
+reticulate::virtualenv_python(envname = 'r-reticulate')
+```
+
+## Instalação do pacote googlemaps
+
+```{r}
+virtualenv_install(envname = 'r-reticulate', packages = 'googlemaps')
+virtualenv_install(envname = 'r-reticulate', packages = 'matplotlib')
+```
+
+# Carregamento das bibliotecas python
+
+```{python}
+
+import numpy      as np
+import pandas     as pd
+import googlemaps as gm
+
+from sklearn.ensemble import RandomForestClassifier
+```
+
+## Importação de dados
+
+```{r}
+
+dataRaw <- data.table::fread(file = "default_features_1059_tracks.txt") %>% 
+  rename(lat = V69, lng = V70) %>% 
+  select(lat, lng, everything()) %>% as.data.frame() %>% filter(lng != 116.38)
+```
+
+## Extração do país dada lat e lng
+
+```{python}
+
+gmaps = gm.Client(key="AIzaSyBQyA88Cb1SNzHVfrQq7OL5rb9cujL9Lh4")
+```
+
+
+```{python}
+
+result = gmaps.reverse_geocode((r.dataRaw["lat"][2], r.dataRaw["lng"][2]), result_type = "country")
+result[0]['address_components'][0]["long_name"]
+```
+
+```{python}
+
+def pais_latlng(py_data, idx):
+  result = gmaps.reverse_geocode((py_data["lat"][idx], py_data["lng"][idx]), result_type = "country")[0]['address_components'][0]["long_name"]
+  return result
+```
+
+```{python}
+paises = [pais_latlng(py_data=r.dataRaw, idx = i) for i in range(0,1019)]
+```
+
+
+```{r}
+dataRaw["pais"] = py$paises
+```
+
+```{r}
+dataRaw %>% group_by(pais) %>% count(sort = TRUE)
+```
+
+```{r}
+library(leaflet)
+```
+
+```{r}
+leaflet(data = dataRaw) %>% 
+  addTiles() %>% 
+  addMarkers(lat = ~lat, lng = ~lng, clusterOptions = markerClusterOptions(), popup = ~pais)
+```
+
+```{r}
+matriz_corr = cor(dataRaw %>% select(-pais))
+
+matriz_corr %>% 
+  reshape2::melt() %>%
+  ggplot(aes(x = Var1, y = Var2, fill = value)) + geom_tile(color = "white")
+
+matriz_corr %>% 
+  reshape2::melt() %>% 
+  filter(value != 1) %>% 
+  mutate(cor_abs = abs(value)) %>% 
+  arrange(desc(cor_abs))
+```
+
+```{python}
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+to_link = r.dataRaw.drop(["lat", "lng", "pais"], axis = 1)
+
+link = linkage(y=to_link, method='single')
+```
+
+```{python}
+from matplotlib import pyplot as plt
+```
+
+```{python}
+plt.figure(figsize=(20,20))
+dendrogram(link, orientation="top")
+plt.show()  
+```
+
+
+```{python}
+from sklearn.naive_bayes import GaussianNB
+from sklearn.multiclass import OneVsOneClassifier
+from random import shuffle
+```
+
+```{python}
+X, y = r.dataRaw.drop(["lat", "lng", "pais"], axis = 1), r.dataRaw["pais"]
+```
+
+```{python}
+ovo1 = OneVsOneClassifier(GaussianNB())
+```
+
+```{python}
+ovo1.fit(X[:800], y[:800])
+```
+
+```{python}
+pred2 = ovo1.predict(X[800:])
+```
+
+```{r}
+table(py$y[801:length(py$y)], py$pred2)
+```
+

@@ -1,0 +1,70 @@
+---
+title: "Configuração inicial do Reticulate"
+output: html_notebook
+---
+
+<br>
+
+### Primeiros passos
+
+Para o uso seguro e reproduzivel do Reticulate, a primeira ação é criar um ambiente virtual (virtualenv), no qual definimos a versão do python que será reticulado à sessão do R-Studio.
+
+A recomendação é não utilizar mais o python 2.7 - A versão não terá mais manutenção.
+
+Após carregar o pacote...
+
+```{r}
+library(reticulate)
+```
+  
+<br>
+... verificamos as versões do python instaladas na máquina pelo `py_discover_config`
+
+
+```{r}
+py_discover_config() 
+```
+
+Pelo output acima, temos as versões python 2 (/usr/bin/python) e python 3(/usr/bin/python3) disponíveis no sistema, e o R reticulou a versão 2 de forma automática.
+
+Criamos a virtualenv informando seu nome e versão do python a ser associada.
+
+```{r}
+virtualenv_create(envname = "r-reticulate", python = "/usr/bin/python3")
+```
+
+Podemos verificar se a virtualenv foi corretamente criada e seu local de instalação através do comando `py_config`.
+
+```{r}
+py_config()
+```
+
+Além de criar, o comando `virtualenv_create` também reticula o python na virtualenv criada. Por padrão, a env é criada dentro da home de cada usuário.
+
+A partir deste momento, podemos criar nosso primeiro chunk de python dentro do RStudio.
+
+```{python}
+print("hello world")
+```
+
+Nossa virtualenv está "vazia" em sua criação, para instalar pacotes do python podemos utilizar o comando `
+
+
+```{r}
+virtualenv_install(envname = 'r-reticulate', packages = "pillow")
+```
+
+
+```{r}
+reticulate::virtualenv_list()
+```
+
+```{r}
+reticulate::virtualenv_python()
+```
+
+
+```{r}
+reticulate::virtualenv_root()
+```
+

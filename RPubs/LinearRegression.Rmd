@@ -1,0 +1,170 @@
+---
+title: "Regressão linear"
+subtitle: "Aplicações na linguagem R"
+author: "Adelmo Filho"
+header-includes:
+  -  \usepackage[portuguese]{babel}
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document:
+    toc: no
+    number_sections: yes
+  html_document:
+    code_folding: show
+    fig_align: center
+    fig_height: 4
+    fig_width: 7
+    highlight: haddock
+    mathjax: default
+    number_sections: no
+    theme: default
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Todos os modelos estão errados
+
+Um modelo pode ser definido como a representação matemática da realidade através de dados coletados, direta ou indiretamente, sobre o fenômeno de interesse. Esta tarefa, contudo, é, geralmente, não-trivial. 
+
+A forma com que adquerimos informação de um sistema qualquer é através de medições, as quais são imperfeitas, pois carregam o erro do instrumento e a variabilidade do fenômeno. Portanto, deve estar claro que por mais precisa seja a coleta de dados e melhor selecionada a forma (e.g. número de parâmetros, linear ou não linear) de um modelo, ele deve ser capaz de lidar com a incerteza dos dados. A não ser que você concorde com Douglas Adams que afirma no segundo livro de sua trilogia de seis livros que:
+
+> ***O Guia [modelo] é definitivo. A realidade é frequentemente incorreta.***
+
+Reconhecer as limitações de um modelo e entender as considerações que levaram ao seu método de estimativa de parâmetros são os pontos chaves para a correta interpretação de um modelo, pois como já disse George Box:
+
+> ***Essencialmente, todos os modelos estão errados, mas alguns são úteis.***
+
+Como veremos, todos os conteúdos vistos até este momento na disciplina de estatística (i.e. visualização de dados, inferência estatística, descrição de dados) são a base para a compreensão e aplicação dos conhecimentos de modelagem estatística, cujo modelo mais famoso é o da regressão linear.     
+
+# Errando é que se aprende
+
+
+
+# Modelos lineares em R
+
+A construção de modelos lineares em R passa pelo uso da função `lm()`, cujos argumentos principais são a variável dependente e as variáveis independentes do modelo de interesse. 
+
+O modelo linear mais simples, $y = \alpha X + \beta$, é expresso na função `lm()` como: `lm(y ~ x)`, isto é, `y` e `x` são conjuntos de dados de mesma dimensão, sendo que a direita do `~` informamos as variáveis dependentes e a esquerda as variáveis independentes. 
+
+A tabela abaixo apresenta diferentes formatos de equação e suas respectivas síntaxes em R.
+
+Equação do modelo  | Síntaxe no R
+------------------ | -------------
+$y = \beta_1 x + \beta_0$ | `lm(y ~ x)`
+$y = \beta_1 x$ | `lm(y ~ x -1)`
+$y = \beta_2 x + \beta_1 z + \beta_0$ | `lm(y ~ x + z)`
+$y = \beta_3 x + \beta_2 z + \beta_1 w + \beta_0$ | `lm(y ~ x + z + w)`
+$y = \beta_2 x^2 + \beta_1 x + \beta_0$ | `lm(y ~ x + I(x^2))`
+$y = \beta_1 xz + \beta_0$ | `lm(y ~ x:z)`
+$y = \beta_3 x + \beta_2 z + \beta_1 xz + \beta_0$ | `lm(y ~ x*z)`
+
+## Um primeiro exemplo
+
+No console do RStudio entre com `head(cars)`, uma tabela contendo os seis primeiros valores do conjunto de dados `cars` será retornado. Este é um conjunto de dados de 50 observações que contém como primeira variável a velocidade máxima de carros da década de 20 em milhas por hora, e como segunda variável a distância percorrida até a alcaçarem a velocidade máxima.
+
+```{r}
+head(cars)
+```
+
+Vamos propor um modelo para explicar a distância alcançada em função da velocidade máxima dos carros. O bom senso, esta poderosa ferramenta de qualquer cientista de dados, aconselha, incialmente, um modelo simples.
+
+```{r}
+modelo_simples = lm(cars$dist ~ cars$speed)
+print(modelo_simples)
+```
+
+Ao retornar o objeto `modelo_simples` com a função `print()` podemos verificar o valor dos coeficientes. O valor associado à `Intercept` corresponde à constante do modelo de regressão e `cars$speed` ao coeficiente relacionado à variável velocidade (speed). Assim, nosso modelo toma a seguinte forma:
+
+$$distância = -17,579 +  3,932 \cdot velocidade$$
+
+Como é de nosso interesse compreender a significância estatística do nosso modelo, o valor dos coeficientes não é suficiente para tal, assim podemos utilizar a função `summary()`.
+
+```{r}
+summary(modelo_simples)
+```
+
+A função `summary()`retorna no console (acima) diversas informações sobre o modelo e sua adequação.
+
+Na linha Call temos a função ajustada pela função lm. Na linha Residual são apresentadas algumas informações sobre os resíduos do modelo (valor mínimo, máximo, mediana, 1° e 3° Quartis).
+
+Na linha Coeficients é apresentada uma tabela contendo o valor dos coeficientes (Estimate), o erro padrão do coeficiente (Std. Error), o valor da estatística t (t value) e finalmente o p-valor do teste t para significância do coeficiente (Pr(>|t|)).
+
+Ao lado direito do p-valor do teste dos coeficientes, ainda é apresentado por meio de símbolos (explicados na linha abaixo), para qual nível de significância os coeficientes são significativos.
+
+Por fim, é realizado um teste F para adequação do modelo, apresentado para isso o número de graus de liberdade envolvidos, o erro padrão residual, os valores para o R^2^ e o R^2^ ajustado, o consequente valor da estatística F e seu respectivo p-valor. 
+
+Com base nas informações acima, podemos afirmar que o modelo é estatisticamente significante (p-valor do teste F aproximadamente nulo), da mesma forma que com os coeficientes de regressão (p-valor do teste T). O valor do R^2^ indica um aderência moderada aos dados (~ 0.6).
+
+## Nossa análise foi suficiente?
+
+Em nossa análise anterior, além de estimar os parâmetros do modelo, também foi realizada a inferência estatística dos coeficientes e do próprio modelo. Este é o procedimento comumente apresentado em trabalhos científicos e artigos, mas isto é realmente suficiente?
+
+Vamos ilustar a importância desse questionamento com o banco de dados `anscombe`. 
+
+```{r}
+head(anscombe)
+```
+
+Neste conjunto de dados, cada valor de x está associado ao y de mesmo número. Assim, podemos construir quatro modelos.
+
+```{r}
+anscombe_1 = lm(y1 ~ x1, data = anscombe)
+anscombe_2 = lm(y1 ~ x1, data = anscombe)
+anscombe_3 = lm(y1 ~ x1, data = anscombe)
+anscombe_4 = lm(y1 ~ x1, data = anscombe)
+```
+
+E, então, gerar a análise estatística dos quatro modelos com a função `summary()`.
+
+```{r}
+summary(anscombe_1)
+summary(anscombe_2)
+summary(anscombe_3)
+summary(anscombe_4)
+```
+
+Caso você tenha observado com cuidado, os quatro modelos possuem os mesmos valores para seus coeficientes, mesmo valor para o R^2^ e R^2^ ajustado, e os mesmos valores para o p-valor do teste t de significância dos coeficientes e do teste F de significância do modelo. No mínimo curioso, não?
+
+Como os modelos só possuem uma variável independente, podemos facilmente elaborar o gráfico de x versus y para cada modelo e sua respectiva reta de regressão.
+
+```{r, fig.height=8, fig.width=8, fig.align='center'}
+par(mfrow = c(2,2))
+
+plot(anscombe$x1, anscombe$y1, pch = 16)
+abline(anscombe_1)
+
+plot(anscombe$x2, anscombe$y2, pch = 16)
+abline(anscombe_2)
+
+plot(anscombe$x3, anscombe$y3, pch = 16)
+abline(anscombe_3)
+
+plot(anscombe$x4, anscombe$y4, pch = 16)
+abline(anscombe_4)
+```
+
+A conclusão é clara: apenas para o primeiro conjunto de dados de anscombe, o modelo construido é aderente aos dados. Portanto, não se deve ignorar a verificação gráfica dos resultados de um modelo de regressão.
+
+## 
+
+```{r}
+path = "C:/Users/Adelmo/Dropbox/7. Cursos/1. Linear Regression/germination.txt"
+germination = read.delim2(path)
+```
+
+```{r}
+summary(lm(germination$dry.mass ~ germination$treatment))
+```
+
+## Um exemplo mais encorpado
+
+
+airquality
+

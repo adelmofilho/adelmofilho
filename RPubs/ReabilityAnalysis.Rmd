@@ -1,0 +1,176 @@
+---
+title: "Modelos de confiabilidade"
+subtitle: "Aplicações na linguagem R"
+author: "Adelmo Filho"
+header-includes:
+  -  \usepackage[portuguese]{babel}
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document:
+    toc: no
+    number_sections: yes
+  html_document:
+    code_folding: show
+    fig_align: center
+    fig_height: 4
+    fig_width: 7
+    highlight: haddock
+    mathjax: default
+    number_sections: no
+    theme: default
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# A análise de confiabilidade
+
+Por se tratar de um conjunto de técnicas relacionadas que lidam com o tempo até a ocorrência de um evento de interesse, a análise de confiabilidade não está sujeita apenas aos temas da engenharia. Diferentes áreas do conhecimento aplicam os mesmos conceitos e análise matemática, dando-a diferentes nomes, dentre as quais se destacam:
+
+- **Medicina**: Análise de sobrevivência
+- **Econômica**: Análise de duração 
+- **Sociologia**: Análise de histórico de eventos
+
+Por consequência, os eventos de interesse são diferentes (e.g. reincidência de câncer, estouro de uma bolha econômica, inicio de uma nova greve, falha de uma bomba centrífuga etc.), contudo, a variável medida ainda é o tempo até a ocorrência do evento.
+
+# Caracteristicas dos dados de confiabilidade
+
+A análise de confiabilidade é realizada com um conjunto de dados contendo ao menos duas variáveis: tempo até o evento (e.g. falha do equipamento) e o indicador de censura.
+
+## Tempo até o evento
+
+O tempo até o evento pode ser informado de forma completa, através de uma variável que informe o tempo em que o objeto de estudo (e.g. bomba centrífuga) começou a ser monitorado  e uma variável que informe o tempo em que o evento de interesse ocorreu. De forma equivalente, o tempo até o evento pode ser informado na forma de um delta (tempo em que o evento ocorreu subtraído do tempo em que iniciou-se a monitorar a ocorrência do evento). 
+
+Em geral, para a engenharia, este dados são medidos em termos de horas ou dias de operação / funcionamento. Desta forma, deve-se evitar trabalhar com os dados em unidades de minutos ou segundos, visto que isso tornaria os resultados preditos pelo modelo mais precisos que os dados experimentais.
+
+## Censura a.k.a Observações incompletas
+
+Imagina-se na posição de um engenheiro de confiabilidade recém contratado de uma indústria química. É solicitado à você a entrega de um relatório sobre a confiabilidade dos compressores em operação desde 2013 até o dia presente (05/08/2016). Ao abrir o arquivo de Excel com os dados registrados pela manutenção, você se depara com o seguinte banco de dados:
+
+```{r, echo = FALSE}
+
+Inicio =c("01/01/2013", "19/04/2013", 
+                   "17/05/2013", "02/07/2014", "04/07/2015")
+
+Fim = c("07/09/2014", "07/10/2015", 
+                 "02/01/2016", "08/07/2015","05/08/2016")
+
+`Tempo (dias)` = as.Date(Fim, format = "%d/%m/%Y") - as.Date(Inicio, format = "%d/%m/%Y")
+
+Fabricante = c("Helmholtz Ltda.", "Helmholtz Ltda.", "Helmholtz Ltda.", "Gibbs S/A", "Gibbs S/A")
+
+`Comentários` = c("Início real anterior a 2013", "Algo entre os dias 6 e 8", "", "", "Ainda em operação")
+
+tabela = cbind(Inicio, Fim, `Tempo (dias)`, Fabricante, `Comentários`)
+
+knitr::kable(tabela, caption = "Histórico de falha dos compressores")
+```
+
+As duas primeiras colunas nos informam a data de inicio e fim de operação (possivelmente para manutenção ou substituição) dos 5 compressores da fábrica. A terceira coluna (Tempo) indica o número de dias entre o inicio de funcionamento do equipamento até a falha. Os fabricantes dos compressores são informados na quarta coluna.
+
+Considerando apenas a informação das quatro primeiras colunas, realizaríamos a análise de confiabilidade considerando que todos os equipamentos falharam no dia indicado (evento ocorreu) e o registro foi fiel a realidade em planta. Contudo, as observações deixadas no banco de dados vão de encontro a isto.
+
+A primeira observação deixa claro que o registro de falhas começou a ser realizado a partir de primeiro de janeiro de 2013, e que como não há dados anteriores a este, o compressor 1 teve sua data de inicio registrada como a do início do monitoramento de falhas dos compressores.
+
+A segunda observação nos informa que a data exata do falha do compressor 2 não foi registrada e está entre os dias 6 e 8, sendo assim registrado o valor médio. Já o último comentário informa que o compressor 5 não falhou até o dia em que os dados foram levantados.
+
+Caso considerassemos apenas os dados dos equipamentos que tiveram sua data de inicio de operação corretamente anotada e que falharam até o dia em que os dados foram levantados, teriamos apenas 2 observações ao passo que descartariamos 3 observações por não estarem **completas**, por estarem **censuradas**.
+
+Ao todo, quatro tipos de censuras podem ser verificadas em um conjunto de dados:
+
+- **Censura à esquerda**: Ocorre quando não se conhece o tempo de início de operação do equipamento (e.g. compressor 1).
+
+- **Censura à direita**: Ocorre quando o equipamento não falhou até o momento em que os dados foram coletados (e.g. compressor 5).
+
+- **Censura intervalar**: Ocorre quando não se conhece com precisão a data de falha do equipamento, apenas um intervalo provável em que esta ocorreu (e.g. compressor 2).
+
+- **Censura aleatória à direita**: Ocorre quando o equipamento deixa de ser monitorado ou é removido do estudo, sem que a falha tenha sido observada.
+
+Em geral, se verifica em maior quantidade a presença de censuras à direita em dados de confiabilidade. Sua representação númerica é feita associando a uma variável "censura" o valor de 0 para dados censurados à direita e 1 para dados completos. Gráficamente, os dados da Tabela 1 podem ser representados conforme indicado pela Figura 1. Nesta, a censura é representada como um ponto sem preenchimento.
+
+A censura, independente do tipo, não deve ser interpretada como um dado descartável. Mesmo não contendo toda a informação de um dado completo, dados censurados podem ser tratados matemáticamente, de forma a agregar mais informação aos modelos de confiabilidade.
+
+```{r, echo = FALSE, fig.cap = "Apresentação gráfica dos dados de confiabilidade", fig.height = 3}
+par(mar = c(2,4,2,2), family = "serif")
+plot(c(as.Date(Fim, format = "%d/%m/%Y"), as.Date(Inicio, format = "%d/%m/%Y")), 
+     rep(1:5, times = 2),
+     pch = c(16, 1, 16, 16, 1, 1, 16, 16, 16, 16),
+     col = rep(c(1, 2, 4, "darkgreen", 6), times = 2),
+     xlab = "Ano", ylab = "Compressor")
+
+for (i in 1:5) {
+    
+    lines(x = c(as.Date(Fim[i], format = "%d/%m/%Y"), 
+                as.Date(Inicio[i], format = "%d/%m/%Y")), 
+          y = c(i,i), col = c(1, 2, 4, "darkgreen", 6)[i], lty = 5, lwd = 0.8)
+    
+}
+```
+
+## Covariáveis
+
+A confiabilidade de um equipamento pode ser também dependente de características construtivas (e.g. fabricante, ano de construção), de operação (e.g. temperatura e pressão de trabalho, fluido de operação), de manutenção (e.g. número de manutenções preventivas ao ano) etc. Ter este tipo de informação em um banco de dados para confiabilidade não é obrigatório, mas permite que análises mais detalhadas poassam ser realizadas, como a análise de tempo de falha acelerado, a qual torna possível escrever os parâmetros das curvas de confiabilidade como função destas covariáveis.
+
+## Modo de falha
+
+Opcional tal como são as variáveis, mas extremamente útil para uma análise de confiabilidade completa, é a informação do modo de falha do equipamento, a qual contempla a razão para a falha ter ocorrido (e.g. superaquecimento do rotor do compressor, Vazamento de óleo). Com este tipo de registro é possível realizar estudos de modo de falha e análise de efeitos (FMEA, do inglês Failure Mode and Effect Analysis).
+
+## Dados de confiabilidade no R
+
+Uma vez realizada a importação dos dados de falha no RStudio, devemos criar um objeto (variável) que mescle de maneira prática os dados de tempo de falha com a variável indicadora de censura. Usamos para isso a função `Surv()` do pacote de funções `survival`. Apenas os objetos criados por esta função poderão ser lidos nas funções que utilizaremos para construção dos modelos de confiabilidade.
+
+```{r}
+library(survival) # Carrega o pacote de funções 'Survival'
+```
+
+Para garantir a reproduzibilidade deste exemplo, vamos criar um novo conjunto de dados de falha, conforme apresentado abaixo, e criar um objeto chamado `conf.data` que armazenará os dados de tempo e censura conjuntamente.
+
+```{r}
+tempo   = c(55, 61, 74, 81, 93, 122, 138, 151, 168, 202, 230, 238)
+censura = c( 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0)
+
+conf.data = Surv(time = tempo, event = censura)
+
+print(conf.data) # Retorna no console o objeto 'conf.data'
+```
+
+Na função `Surv` o argumento `time`exige os tempos de falha (não negativos e não nulos) e o argumento `event` exige a variável indicadora de censura (0 para censura à direita e 1 para dados completos). Ao retornar o objeto `conf.data` no console verificamos que as observações com censura à direita são sinalizadas pelo sinal de positivo do seu lado direito.
+
+# Função de confiabilidade
+
+Formalmente, a confiabilidade de um sistema / processo / indivíduo é definida como:
+
+> *Reliability is the probability of a product performing its intended function for its specified life, under specified operating conditions, in a manner which meets or exceeds customer expectations.*
+
+Esta definição é rica em significado. Em um primeiro momento define a métrica da confiabilidade (probabilidade), isto é, ela deve variar entre 0 (0%) a 1 (100%). Além disso, a confiabilidade é uma função do tempo, o que sugere duas condições de contorno: (1) A confiabilidade de um sistema quando o tempo de funcionamento deste tende a infinito é nula, e (2) Confiablidade de um sistema no momento de partida (inicio de operação) é máxima e igual à unidade.
+
+$$lim_{t \rightarrow \infty } R = 0$$
+
+$$R_{(t = 0)} = 1$$
+
+Por fim, verificamos que o evento de interesse em uma análise de confiabilidade não é necessáriamente igual a falha, uma vez que não sejam atendidas as especificações já é possível considerar a ocorrência do evento.
+
+Matemáticamente, a função de confiabilidade de um sistema é definida como sendo a probabilidade no tempo *t* deste não falhar (eveto) até um certo tempo *T* qualquer
+
+$$R_{(t)} = P_{(T  \geq  t)}$$
+
+A variável *T* vem de uma distribuição de probabilidade acumulada $F(t)$ qualquer no intervalo $[0,\infty]$ (uma restrição necessária, já que o tempo é uma variável positiva não nula), de forma que:
+
+$$R_{(t)} = 1 - F_{(t)}$$
+
+a função $F(t)$ é o complementar da função de confiabilidade, por isso é definida como a função de falha, isto é, indica a probabilidade de falha (evento) do sistema em função do tempo.
+
+## Modelagem paramétrica da confiabilidade
+
+Sendo a função de confiabilidade uma função de probabilidade acumulada (CDF, do inglês cumulative distribution function) é possível estimar os parâmetros de uma CFD qualquer a partir de dados coletados de um sistema de interesse. Neste caso, nosso problema se resume a selecionar a melhor distribuição para nosso conjunto de dados e estimar os parâmetros desta distribuição.
+
+As principais distribuições utilizadas para modelar a confiabilidade são a exponencial, Weibull e lognormal (Figura 2).
+
+
+

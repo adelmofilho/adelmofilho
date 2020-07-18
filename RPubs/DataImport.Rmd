@@ -1,0 +1,28 @@
+---
+title: "Importação de dados"
+author: "Adelmo Filho"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document:
+    toc: no
+  html_document:
+    code_folding: show
+    fig_align: center
+    fig_height: 6
+    fig_width: 7
+    highlight: haddock
+    mathjax: default
+    number_sections: no
+    theme: default
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 

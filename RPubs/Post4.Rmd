@@ -1,0 +1,185 @@
+---
+title: "Controle estatístico de processos em R"
+author: "Adelmo Filho ( <aguiar.soul@gmail.com> )"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    fig_width: 7
+    fig_height: 6
+    fig_align: "center"
+    keep_md: true
+    mathjax: default
+    code_folding: show
+    theme: default
+    highlight: haddock
+    toc: true
+    number_sections: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<br>
+
+# Pacote de funções [qcc](https://cran.r-project.org/web/packages/qcc/qcc.pdf)
+
+<p style="text-align: justify;">O pacote [qcc](https://cran.r-project.org/web/packages/qcc/qcc.pdf) (do inglês, "Quality control chart") é um dos mais utilizados em R para estudos de controle estatístico de processo, por sua facilidade em gerar os gráficos de controle e a análise da capabilidade do processo. Diferente das análises de inferência ou regressão linear no R, todas as informações são exibidas em um único painel.</p>
+
+```{r, message=FALSE, warning=FALSE,results='hide'}
+install.packages("qcc", repos = "http://cran.rstudio.com/") # Instalar o pacote
+library(qcc) # Carregar o pacote para uso das funções
+```
+
+<p style="text-align: justify;">Para instalar pela primeira vez o pacote [qcc](https://cran.r-project.org/web/packages/qcc/qcc.pdf) entre com a primeira linha do código acima e em seguida ative o pacote com a função **library** como acima.</p>
+
+# Gráficos X-barra e R
+
+<p style="text-align: justify;">Para a construção dos gráficos X-barra e R utilizaremos os dados da segunda questão da lista de exercícios 5 (dados para download [AQUI](https://www.dropbox.com/s/0v574ny3ujsb56z/Post_4_data.txt?dl=0)). Entrando com o código abaixo, uma janela se abrirá, selecione os dados baixados por você.</p>
+
+```{r}
+data = read.table(file.choose(), 
+                   quote="\"", 
+                   comment.char="")
+
+print(data)
+```
+
+<p style="text-align: justify;">A construção de todos gráficos de controle passa pelo uso da função **qcc**, esta tem como argumentos principais o conjunto de dados a ser plotado e o tipo de carta de controle. Para gerar o gráfico X-bar, entra-se, por exemplo, com o seguinte código.</p>
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+plot.xbar = qcc(data, type="xbar")
+```
+<br>
+<p style="text-align: justify;">Além da carta de controle, propriamente dita, o gráfico também apresenta a linha central (CL), o limite inferior (LCL) e superior de controle (UCL), e o desvio-padrão (StdDev). Os outros argumentos serão discutidos a seguir.</p>
+
+<p style="text-align: justify;">O gráfico de amplitude (R) é gerado apenas com a substituição do argumento **type** para "R", conforme o código abaixo.</p>
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+plot.R = qcc(data, type="R")
+```
+<br>
+<p style="text-align: justify;">Para a estimativa dos parâmetros de capabilidade do processo e seu respectivo gráfico utiliza-se a função **process.capability**, a qual usa como argumentos o "plot.xbar" (na realidade, qualquer *objeto* criado com a função "qcc" do tipo X-bar) e as especificações do processo. Como na questão, de onde os dados foram obtidos, é indicado que a variável medida (pH) deve estar entre 6 e 9, essa foi a especificação passada para a função abaixo.</p>
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+process.capability(object = plot.xbar,
+                   spec.limits=c(6,9))
+```
+
+<p style="text-align: justify;">O gráfico acima apresenta tanto o histograma dos dados quanto a sua aproximação (em tracejado) para a distribuição normal em conjunto com os limites de especificação do processo. No painel, ainda são exibidos os índices de capabilidade do processo $C_p$, $C_{pl}$, $C_{pu}$, $C_{pk}$, $C_{pm}$; o percentual de observações abaixo (Obs < LSL) do limite inferior de especificação e o percentual acima do limite superior de especificação (Obs > USL). Os parâmetros "Exp < LSL" e "Exp > USL" são, respectivamente, o percentual esperado, dado o ajuste da distribuição normal, de valores abaixo do LSL e acima do USL.</p>
+
+<p style="text-align: justify;">Os dados abaixo do painel repetem aqueles exibidos no painel, com exceção dos índices de capabilidade, que são apresentados com o intervalo de confiança destes índices para 5% de significância.</p>
+
+# Gráficos de individuais e amplitude móvel
+
+<p style="text-align: justify;">Para ilustrar a geração dos gráficos de individuais e amplitude móvel utilizaremos os dados da terceira questão da lista de exercícios 5, apresentados abaixo.</p>
+
+```{r}
+data2 = c(0.8, 0.9, 2.9, 1.3, 1.3, 1.3, 3.8, 1.2, 2.4, 5.0, 1.7, 0.6, 2.6, 2.1, 5.8, 1.2, 1.2, 2.3, 4.0, 3.0, 1.6, 9.0, 1.1, 0.7, 4.8, 2.5, 8.3, 0.9, 1.0, 4.5)
+```
+
+<p style="text-align: justify;">A carta de controle de individuais é criado com a função **qcc** e o argumento type igual a "xbar.one".</p>
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+plot.ind = qcc(data2, type="xbar.one")
+```
+<br>
+<p style="text-align: justify;">Para criar a carta de amplitude móvel usa-se os mesmos argumentos que os utilizados para a carta de amplitudes, contudo, os dados devem ser manipulados para uma determinada estrutura. Os dados para gerar a carta de amplitude móvel devem ter duas colunas: a primeira contendo a primeira observação até a penúltima e a segunda coluna contendo a segunda observação até a última, ou seja, as colunas tem um *lag* temporal.</p>
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+novo.data2 = matrix(cbind(data2[1:length(data2)-1], 
+                          data2[2:length(data2)]),
+                    ncol=2)
+
+plot.amp.movel = qcc(novo.data2, type="R", plot = TRUE)
+```
+<br>
+<p style="text-align: justify;">As informações no painel são equivalentes às exibidas pelos outros tipos de cartas de controle.</p>
+<br>
+
+# Atualizando as cartas de controle
+
+<p style="text-align: justify;">Em determinadas situações é de interesse atualizar as cartas de controles com novos dados, isto é, uma vez calibrada a carta com um conjunto de dados, plotar novos dados com os limites superior e inferior já estimados. Para isso, usa-se o argumento **newdata** na função **qcc**.</p>
+
+<p style="text-align: justify;">Os painéis abaixo são cartas X-bar e de individuais dos exemplos anteriores. Contudo, parte dos dados foi utilizada para a calibração das cartas e a outra plotada em cima dos limites definidos na calibração.</p>
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+plot.atual.1 = qcc(data[1:10,], type = "xbar", newdata = data[11:15,])
+```
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+plot.atual.2 = qcc(data2[1:20], type="xbar.one", newdata = data2[21:30])
+```
+
+<p style="text-align: justify;">O próprio painel informa onde inicia a plotagem dos novos dados. Caso seja de interesse um painel unicamente com os novos dados, pode-se entrar com o código abaixo, para, por exemplo, plotar as novas observações da carta de individuais acima (plot.atual.2).</p>
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+plot(plot.atual.2, chart.all=FALSE)
+```
+<br>
+
+# Regras de Shewhart
+
+<p style="text-align: justify;">As regras para indicar as potenciais observações fora de controle [(Regras de Shewhart)](https://en.wikipedia.org/wiki/Nelson_rules) também estão incluídas no pacote de funções [qcc](https://cran.r-project.org/web/packages/qcc/qcc.pdf). Dentre as regras, encontradas na literatura, destacam-se:</p>
+
+> Regra 1: Um único ponto fora dos limites de controle;
+
+> Regra 2: Oito ou mais pontos seguidos acima (ou abaixo) da linha central.
+
+> Regra 3: Seis pontos consecutivos crescendo ou descendo.
+
+> Regra 4: Dois de três pontos consecutivos próximos (um terço externo) de um limite de controle.
+
+> Regra 5: Quinze pontos consecutivos próximos (um terço interno) da linha central.
+
+<p style="text-align: justify;">O pacote de funções [qcc](https://cran.r-project.org/web/packages/qcc/qcc.pdf), contudo não aplica todas elas na detecção de pontos fora de controle (descobri isso, depois de ler as 1117 linhas de código da função). Na realidade, apenas duas regras estão incluídas: Regra 1 e a regra 2 modificada para **7** ao invés de 8 pontos seguidos acima ou abaixo da linha central.</p>
+
+<p style="text-align: justify;">Com o exemplo abaixo, podemos verificar como o pacote [qcc](https://cran.r-project.org/web/packages/qcc/qcc.pdf) lida com os potenciais pontos fora de controle.</p>
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+newdata = matrix(c(0.8, 0.9, 0.7,
+                   1.2, 1.3, 1.1,
+                   1.5, 1.6, 1.4,
+                   1.8, 1.8, 1.8,
+                   2.5, 2.5, 2.5,
+                   2.8, 2.8, 2.8,
+                   3.5, 3.5, 3.5,
+                   4.0, 4.0, 4.0,
+                   4.8, 2.5, 8.3,
+                   0.9, 1.0, 4.5), ncol = 6, byrow = TRUE)
+
+plot.shewhart = qcc(data, newdata = newdata, type="xbar")
+```
+<br>
+<p style="text-align: justify;">No exemplo acima, atualizamos o gráfico X-bar do primeiro estudo de caso com novos dados e como pode-se ver, dois pontos (em vermelho) estão abaixo do LCL. Além trabalhar com cores, a indicação dos potenciais pontos fora de controle também é apresentada na parte inferior do gráfico com o número de pontos associado a Regra 1 (Number beyond limits) e à Regra 2 (Number violating runs). </p>
+
+<p style="text-align: justify;">Caso desejássemos alterar o número de pontos necessários para violar a Regra 2, digamos de 7 para 3, podemos utilizar a função abaixo.</p>
+
+```{r}
+qcc.options(run.length = 3)
+```
+
+<p style="text-align: justify;">Gerando um novo gráfico com os mesmos dados, mas com o número de pontos da Regra 2 atualizada, chegamos ao gráfico abaixo.</p>
+
+```{r, fig.width = 8.5, fig.height = 4, fig.align = 'center'}
+
+plot.shewhart.3 = qcc(data, newdata = newdata, type="xbar")
+```
+<br>
+<p style="text-align: justify;">Os pontos violando a Regra 2 são apresentados em amarelo e o "Number of violation runs" atualizado para 5. Verifique que a observação 17 viola tanto a Regra 1 quanto a Regra 2.</p>
+
+<br>
+
+# Referências indicadas
+
+<br>
+
+1. [SCRUCCA, L. qcc: An R package for quality control charting and statistical process control. R news, Vol. 4/1, June 2004.](https://www.dropbox.com/s/ho0uyj8sihm5ek2/Rnews_2004-1-pag11-17.pdf?dl=0)
+
+<br>
+
+2. [ANDREJIOVÁ, M.; KIMÁKOVÁ, Z. The open source software “R” in the statistical Quality control. ANNALS OF FACULTY ENGINEERING HUNEDOARA – International Journal Of Engineering. 2012.](https://www.dropbox.com/s/mzfdkv3x78e82ne/ANNALS-2012-3-35.pdf?dl=0)
+

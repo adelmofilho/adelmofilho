@@ -1,0 +1,83 @@
+---
+title: "Atividade de regressão linear em R"
+author: "Adelmo Filho ( <aguiar.soul@gmail.com> )"
+date: "3 de Junho de 2016"
+output: 
+  html_document:
+    fig_width: 7
+    fig_height: 9
+    fig_align: "center"
+    keep_md: true
+    mathjax: default
+    code_folding: hide
+    theme: default
+    highlight: haddock
+    toc: true
+    number_sections: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<br>
+
+# Estudo de caso: Reator PFR
+
+<p style="text-align: justify;">Deseja-se modelar a concentração de um poluente no efluente de um [reator PFR](https://en.wikipedia.org/wiki/Plug_flow_reactor_model) destinado a degradar o poluente. Foram medidas as concentrações do poluente na saída do reator para diferentes valores da temperatura da corrente de entrada no reator e do tempo de residência do reator.</p>
+
+![](http://www.aspentech.com/uploadedImages/Products/Products/Engineering_Products/11-2995_HYSYS-Reactors2_Lg.jpg)
+
+<p style="text-align: justify;">Os dados experimentais colhidos são apresentados abaixo.</p>
+
+```{r, echo = FALSE}
+data <- read.delim("./Data/Post_2_data.txt")
+```
+
+```{r}
+print(data)
+```
+
+<br>
+
+# Download dos dados
+
+<p style="text-align: justify;">Clique nos links abaixo para fazer o download dos dados da atividade e o script da aula prática de regressão. Copie e salve em um bloco de notas (.txt) o banco de dados, e faça a importação como em sala de aula: Importe pelo RStudio e em seguida copie o código de importação gerado no console para seu script, assim ao gerar o .pdf, a importação será realizada corretamente.</p>
+
+<br>
+[BANCO DE DADOS](https://www.dropbox.com/s/sbmjx66d60b788c/Post_2_data.txt?dl=0)
+
+[SCRIPT DA AULA PRÁTICA DE REGRESSÃO](https://www.dropbox.com/s/fke4rrjjh22a2qv/Aula_Doutorado.pdf?dl=0)
+
+<br>
+
+# Questionário
+
+<br>
+<p style="text-align: justify;">**Primeira Questão:** Baseado em nossa última aula, crie no RStudio os três modelos, cuja equações são apresentadas abaixo, com os dados experimentais do reator.</p>
+
+<br>
+
+$Modelo.1: C = \beta_0 + \beta_1\cdot T + \beta_2\cdot t+ \beta_3\cdot t^2+ \beta_4\cdot T\cdot t$
+
+$Modelo.2: C = \beta_0 + \beta_1\cdot T + \beta_2\cdot t+ \beta_3\cdot t^2$
+
+$Modelo.3: C = \beta_0 + \beta_1\cdot T + \beta_2\cdot t+ \beta_3\cdot T^2$
+
+<br>
+
+<p style="text-align: justify;">**Segunda Questão:** Discuta a significância dos coeficientes dos modelos e dos próprios modelos.</p>
+
+<br>
+
+<p style="text-align: justify;">**Terceira Questão:** Dentre os três modelos, qual você afirmaria ser o "melhor" modelo estatisticamente.</p>
+
+---
+
+<p style="text-align: justify;">**O envio da atividade é obrigatória para <aguiar.soul@gmail.com> até o dia 11.06.2016 (sábado) como forma de verificar que todos conseguiram gerar o pdf a partir do script em R.**</p>
+
+<p style="text-align: justify;">**Envie o e-mail com o "Assunto": [ENGD83] - Atividade 2 - "seu nome"**</p>
+
+<p style="text-align: justify;">**Caso deseje que a atividade seja corrigida, informe, por favor, no corpo do e-mail.**</p>

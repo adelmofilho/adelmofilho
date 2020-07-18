@@ -1,0 +1,51 @@
+---
+title: "Análise de confiabilidade em R"
+subtitle: "Parte 1/3"
+author: "Adelmo Filho ( <aguiar.soul@gmail.com> )"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    fig_width: 7
+    fig_height: 6
+    fig_align: "center"
+    keep_md: true
+    mathjax: default
+    code_folding: show
+    theme: default
+    highlight: haddock
+    toc: true
+    number_sections: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Distribuições de probabilidade
+
+Na análise de confiabilidade, nosso objeto de estudo (evento de interesse) é o tempo de vida de equipamentos ou sistemas, seus equivalentes e derivados (e.g. tempo médio entre falhas, taxa de falha).
+
+O procedimento adotado para este tipo de análise envolve ajustar a um determinado **modelo probabilistico**, em outras palavras, utiliza-se os dados de falha para estimar os parâmetros de uma **função de densidade de probabilidade**. A vantagem desta abordagem está no significado e aplicabilidade associados ao valor dos parâmetros da distribuição de probabilidade.
+
+**O que é uma função de densidade de probabilidade?**
+
+
+
+
+
+```{r, echo = FALSE, fig.align='center', fig.height=4, dpi=1000}
+x <- seq(-5,5,0.001)
+y <- dnorm(x)
+
+hist(h <- rnorm(10000), probability = TRUE, 
+     col = "lightgreen", ylim = c(0,0.42), main = "", 
+     xlab = "x", ylab = "Densidade de probabilidade")
+
+lines(x, y, type = "l", col = "red")
+```
+
+
+

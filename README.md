@@ -8,4 +8,3 @@ Have withstood bugs to create many defs <br />
 Yet those hands will never deploy anything. <br /> 
 So, as I Pray... <br /> <br /> 
 Unlimited Code Works
-<br />

@@ -1,4 +1,4 @@
-###
+##
 
 > I am the bone of my code <br /> 
 XGH is my body, coffee is my blood <br /> 
@@ -8,18 +8,15 @@ Have withstood bugs to create many defs <br />
 Yet those hands will never deploy anything. <br /> 
 So, as I Pray... <br /> <br /> 
 Unlimited Code Works
+<br />
 
-<!--
-**adelmofilho/adelmofilho** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+## Principais Projeto
 
-Here are some ideas to get you started:
-
--  ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+[Ancestral God Land](https://github.com/Ancestral-God-Land): Projetos de Infra as a Code  
+[Deity Lake](https://github.com/Deity-Lake): Repositórios de desafios do Kaggle  
+[Divine Feathers ](https://github.com/Divine-Feathers): Projetos para deploy na AWS  
+[Heavenly-Note](https://github.com/Heavenly-Note): Projetos de bots para Twitter e Telegram  
+[Hidden-Cloud](https://github.com/Hidden-Cloud): Projetos de Data Science  
+[Myriad-Dao-Peak](https://github.com/Myriad-Dao-Peak): Aplicações Shiny  
+[Sky-Origin](https://github.com/Sky-Origin): R packages  
+[Thousand-Flowers](https://github.com/Thousand-Flowers):  Projetos de Docker

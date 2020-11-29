@@ -9,7 +9,6 @@ Yet those hands will never deploy anything. <br />
 So, as I Pray... <br /> <br /> 
 Unlimited Code Works
 
-<div style="padding-bottom:100px"></div>
 
 ## :hammer_and_wrench: Languages and Tools
 [<code>
@@ -56,27 +55,19 @@ Unlimited Code Works
 </code>](https://www.kernel.org/)
 
 
-</br>
-
 ## :rocket: Currently coding
-
 <a href="https://github.com/A2TW/data-preparation"></a>
 <a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a></th>
 <a href="https://github.com/adelmofilho/mlworks"></a>
 <a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=mlworks&show_owner=true"></a></th>
 
 
-</br>
-
 ## 📝 Latest Blog Posts
-
 These are my latest posts on [Personal Blog](https://blog.adelmofilho.com/)
 
 - [MLOps + R: Parte 1: Fazendo tudo errado](https://blog.adelmofilho.com/2020-09-30-mlops1/)
 - [Docker in Docker: A Jenkins Adventure](https://blog.adelmofilho.com/2020-06-21-dind/)
 
-
-</br>
 
 ## :eight_pointed_black_star: Statistics
 
@@ -86,10 +77,8 @@ These are my latest posts on [Personal Blog](https://blog.adelmofilho.com/)
   <img align="center" src="https://github-readme-stats.sabesansathananthan.vercel.app/api/top-langs/?username=adelmofilho&layout=compact&theme=vue&hide=html,css,jupyter%20notebook&layout=compact&hide_border=true/" />
 </a>
 
-</br>
 
 ## :phone: Get in touch
-
 [<img align="left" alt="Sabesan" height="22px" src="https://raw.githubusercontent.com/iconic/open-iconic/master/svg/globe.svg" />][website]
 [<img align="left" alt="Sabesan | LinkedIn" height="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/linkedin.svg" />][linkedin]
 [<img align="left" alt="Sabesan | Stackoverflow" height="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/stackoverflow.svg" />][stackoverflow]

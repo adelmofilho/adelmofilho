@@ -9,7 +9,7 @@ Yet those hands will never deploy anything. <br />
 So, as I Pray... <br /> <br /> 
 Unlimited Code Works
 
-<p style="margin-bottom: 2%;"></p>
+<p style="margin-bottom: 5%;"></p>
 
 ## :hammer_and_wrench: Languages and Tools
 [<code>

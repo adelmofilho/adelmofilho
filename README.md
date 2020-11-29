@@ -8,3 +8,7 @@ Have withstood bugs to create many defs <br />
 Yet those hands will never deploy anything. <br /> 
 So, as I Pray... <br /> <br /> 
 Unlimited Code Works
+
+![Adelmo's github stats](https://github-readme-stats.vercel.app/api?username=adelmofilho&count_private=true&show_icons=true)
+
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=adelmofilho&hide=html,css,jupyter%20notebook&layout=compact)

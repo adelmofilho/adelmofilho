@@ -55,13 +55,17 @@ Unlimited Code Works
 
 ### Currently coding
 
-![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=A2TW&repo=data-preparation&show_owner=true)
+
+<a>
+<img align="center" alt="adelmofilho's Github Stats" src="https://github-readme-stats.vercel.app/api/pin/?username=A2TW&repo=data-preparation&show_owner=true" /></a>
+
+
 
 ### Statistics
 
-<a href="https://github-readme-stats.sabesansathananthan.vercel.app/api?username=adelmofilho&show_icons=true&hide_border=true&count_private=true&include_all_commits=true&theme=radical">
-<img align="center" alt="adelmofilho's Github Stats" src="https://github-readme-stats.sabesansathananthan.vercel.app/api?username=adelmofilho&show_icons=true&hide_border=true&count_private=true&include_all_commits=true&theme=vue" /></a>
-<a href="https://github-readme-stats.sabesansathananthan.vercel.app/api/top-langs/?username=adelmofilho&layout=compact&theme=vue">
+<a>
+<img align="center" alt="adelmofilho's Github Stats" src="https://github-readme-stats.sabesansathananthan.vercel.app/api?username=adelmofilho&show_icons=true&hide_border=true&count_private=true&include_all_commits=false&theme=vue" /></a>
+<a>
   <img align="center" src="https://github-readme-stats.sabesansathananthan.vercel.app/api/top-langs/?username=adelmofilho&layout=compact&theme=vue&hide=html,css,jupyter%20notebook&layout=compact&hide_border=true/">
 </a>
 

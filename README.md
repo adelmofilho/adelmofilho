@@ -55,7 +55,7 @@ Unlimited Code Works
 
 ### Currently coding:
 
-![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=A2TW&repo=data-preparation)
+![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=A2TW&repo=data-preparation&show_owner=true)
 
 
 

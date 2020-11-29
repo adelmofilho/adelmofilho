@@ -54,17 +54,16 @@ Unlimited Code Works
 </code>](https://www.kernel.org/)
 
 ### Currently coding
-
+<div id="banner">
+    <div class="inline-block">
 <a href="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a>
-<a>
-  <img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true">
-</a>
-
+<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a>
+</div>
+      <div class="inline-block">
 <a href="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a>
-<a>
-  <img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true">
-</a>
-
+<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a>
+</div>
+  </div>
 
 ### Statistics
 

@@ -54,16 +54,22 @@ Unlimited Code Works
 </code>](https://www.kernel.org/)
 
 ### Currently coding
-<div class="row", style=" content: "";clear: both;display: table;">
-     <div class="column", style="float: left;width: 33.33%;padding: 5px;">
+
+ <table style="width:100%;border-collapse: collapse">
+  <tr>
+    <th>
 <a href="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a>
-<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a>
-</div>
-        <div class="column", style="float: left;width: 33.33%;padding: 5px;">
+<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a></th>
+    <th>
 <a href="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=mlworks&show_owner=true"></a>
-<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=mlworks&show_owner=true"></a>
-</div>
-  </div>
+<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=mlworks&show_owner=true"></a></th>
+  </tr>
+</table> 
+
+
+
+
+
 
 ### Statistics
 

@@ -55,21 +55,10 @@ Unlimited Code Works
 
 ### Currently coding
 
- <table style="width:100%;border-collapse: collapse">
-  <tr>
-    <th>
 <a href="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a>
 <a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a></th>
-    <th>
 <a href="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=mlworks&show_owner=true"></a>
 <a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=mlworks&show_owner=true"></a></th>
-  </tr>
-</table> 
-
-
-
-
-
 
 ### Statistics
 

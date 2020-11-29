@@ -9,7 +9,7 @@ Yet those hands will never deploy anything. <br />
 So, as I Pray... <br /> <br /> 
 Unlimited Code Works
 
-### Languages and Tools:
+### Languages and Tools
 [<code>
 <img alt="R" width="26px" src="https://img.icons8.com/officel/80/000000/registered-trademark.png" />
 </code>](https://www.r-project.org/)
@@ -53,12 +53,16 @@ Unlimited Code Works
 <img alt="linux" width="26px" src="https://img.icons8.com/color/96/000000/linux.png">
 </code>](https://www.kernel.org/)
 
-### Currently coding:
+### Currently coding
 
 ![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=A2TW&repo=data-preparation&show_owner=true)
 
+### Statistics
+
+<a href="https://github-readme-stats.sabesansathananthan.vercel.app/api?username=adelmofilho&show_icons=true&hide_border=true&count_private=true&include_all_commits=true&theme=radical">
+<img align="center" alt="adelmofilho's Github Stats" src="https://github-readme-stats.sabesansathananthan.vercel.app/api?username=adelmofilho&show_icons=true&hide_border=true&count_private=true&include_all_commits=true&theme=vue" /></a>
+<a href="https://github-readme-stats.sabesansathananthan.vercel.app/api/top-langs/?username=adelmofilho&layout=compact&theme=vue">
+  <img align="center" src="https://github-readme-stats.sabesansathananthan.vercel.app/api/top-langs/?username=adelmofilho&layout=compact&theme=vue&hide=html,css,jupyter%20notebook&layout=compact&hide_border=true/">
+</a>
 
 
-![Adelmo's github stats](https://github-readme-stats.vercel.app/api?username=adelmofilho&count_private=true&show_icons=true?theme=vue)
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=adelmofilho&hide=html,css,jupyter%20notebook&layout=compact)

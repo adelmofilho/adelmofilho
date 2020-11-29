@@ -53,9 +53,12 @@ Unlimited Code Works
 <img alt="linux" width="26px" src="https://img.icons8.com/color/96/000000/linux.png">
 </code>](https://www.kernel.org/)
 
+### Currently coding:
 
-![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=adelmofilho&repo=tenispolaR)
+![ReadMe Card](https://github-readme-stats.vercel.app/api/pin/?username=A2TW&repo=data-preparation)
+
+
 
 ![Adelmo's github stats](https://github-readme-stats.vercel.app/api?username=adelmofilho&count_private=true&show_icons=true?theme=vue)
 
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=adelmofilho&hide=html,css,jupyter%20notebook)
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=adelmofilho&hide=html,css,jupyter%20notebook&layout=compact)

@@ -58,4 +58,4 @@ Unlimited Code Works
 
 ![Adelmo's github stats](https://github-readme-stats.vercel.app/api?username=adelmofilho&count_private=true&show_icons=true?theme=vue)
 
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=adelmofilho&hide=html,css,jupyter%20notebook&layout=compact)
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=adelmofilho&hide=html,css,jupyter%20notebook)

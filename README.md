@@ -57,7 +57,7 @@ Unlimited Code Works
 
 ## :rocket: Currently coding
 <a href="https://github.com/A2TW/data-preparation"></a>
-<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=UdacitySentimentAnalysis&show_owner=true"></a>
+<a href="https://github.com/adelmofilho/UdacitySentimentAnalysis"><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=UdacitySentimentAnalysis&show_owner=true"></a>
 
 
 ## 📝 Latest Blog Posts

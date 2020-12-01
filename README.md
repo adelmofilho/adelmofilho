@@ -57,9 +57,7 @@ Unlimited Code Works
 
 ## :rocket: Currently coding
 <a href="https://github.com/A2TW/data-preparation"></a>
-<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=a2tw&repo=data-preparation&show_owner=true"></a></th>
-<a href="https://github.com/adelmofilho/mlworks"></a>
-<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=mlworks&show_owner=true"></a></th>
+<a><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=adelmofilho&repo=UdacitySentimentAnalysis&show_owner=true"></a>
 
 
 ## 📝 Latest Blog Posts

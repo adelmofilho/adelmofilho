@@ -11,12 +11,8 @@ Unlimited Code Works
 
 
 ## :hammer_and_wrench: Languages and Tools
-[<code>
-<img alt="R" width="26px" src="https://img.icons8.com/officel/80/000000/registered-trademark.png" />
-</code>](https://www.r-project.org/)
-[<code>
-<img alt="python" width="26px" src="https://img.icons8.com/color/240/000000/python.png">
-</code>](https://www.python.org/)
+[<code><img alt="R" width="26px" src="https://img.icons8.com/officel/80/000000/registered-trademark.png" /></code>](https://www.r-project.org/)
+[<code><img alt="python" width="26px" src="https://img.icons8.com/color/240/000000/python.png"></code>](https://www.python.org/)
 [<code>
 <img alt="docker" width="26px" src="https://img.icons8.com/color/48/000000/docker.png">
 </code>](https://www.docker.com/)
